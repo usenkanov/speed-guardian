@@ -32,9 +32,11 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    view: 'homepage'
-  }
+    '/': {
+        view: 'homepage'
+    },
+    'get /schedule' : 'ScheduleController.schedule',
+    'get /showSchedule' : 'ScheduleController.showSchedule'
 
   /***************************************************************************
   *                                                                          *
