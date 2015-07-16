@@ -52,7 +52,6 @@ module.exports = {
                 return new Promise(function (resolve) {
                     jobs.forEach(function (job) {
                         var scheduledJob = new schedule.Job(uuid.v4(), function () {});
-                        console.log('scheduled');
                         scheduledJob.schedule(job.cron, function () {
                             runQueue(job);
                         });
@@ -83,7 +82,6 @@ module.exports = {
 };
 
 function runQueue(task) {
-    console.log('triggered');
     var urls = [];
     task.domains.forEach(function (domain) {
         task.paths.forEach(function (path) {
