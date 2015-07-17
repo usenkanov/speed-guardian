@@ -16,19 +16,15 @@ var jobs = [
             '/place/Mount-Tambora',
             '/science/volcano'
         ],
-        domains: [
-            'http://www.britannica.com',
-        ]
+        domain: 'http://www.britannica.com'
     },
     {
-        cron: '* * * * *',
+        cron: '*/2 * * * *',
         paths: [
             '/post/253626/',
             '/post/253620/'
         ],
-        domains: [
-            'http://geektimes.ru/'
-        ]
+        domain: 'http://geektimes.ru/'
     }
 ];
 
@@ -51,11 +47,11 @@ module.exports = {
             .then(function () {
                 return new Promise(function (resolve) {
                     jobs.forEach(function (job) {
-                        var scheduledJob = new schedule.Job(uuid.v4(), function () {});
-                        scheduledJob.schedule(job.cron, function () {
+                        var cronJob = new schedule.Job(uuid.v4(), function () {
                             runQueue(job);
                         });
-                        tempJobNames.push(scheduledJob.name);
+                        cronJob.schedule(job.cron);
+                        tempJobNames.push(cronJob.name);
                     });
                     return resolve();
                 });
@@ -64,7 +60,7 @@ module.exports = {
                 var result = '<b>Schedules re-initiated!</b> <br>';
                 result += '<br>';
                 result += 'List of scheduled jobs:<br>' + tempJobNames.join('<br>');
-                result += '<br>';
+                result += '<br><br>';
                 result += 'List of cancelled jobs:<br>' + canceledJobs.join('<br>');
                 return res.send(result);
             })
@@ -74,19 +70,14 @@ module.exports = {
             });
     },
     showSchedule: function (req, res) {
-        jobs.forEach(function (job) {
-            runQueue(job);
-        });
         res.send();
     }
 };
 
 function runQueue(task) {
     var urls = [];
-    task.domains.forEach(function (domain) {
-        task.paths.forEach(function (path) {
-            urls.push(domain + path);
-        });
+    task.paths.forEach(function (path) {
+        urls.push(task.domain + path);
     });
 
     queue.push(urls);
