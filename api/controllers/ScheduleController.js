@@ -32,6 +32,9 @@ module.exports = {
 
     schedule: function (req, res) {
         var canceledJobs = [];
+        var result = {
+            is_successful: false
+        };
 
         Promise.resolve()
             .then(function () {
@@ -57,11 +60,10 @@ module.exports = {
                 });
             })
             .then(function () {
-                var result = '<b>Schedules re-initiated!</b> <br>';
-                result += '<br>';
-                result += 'List of scheduled jobs:<br>' + tempJobNames.join('<br>');
-                result += '<br><br>';
-                result += 'List of cancelled jobs:<br>' + canceledJobs.join('<br>');
+                result.is_successful = true;
+                result.scheduled = tempJobNames;
+                result.unscheduled = canceledJobs;
+
                 return res.send(result);
             })
             .catch(function (err) {
