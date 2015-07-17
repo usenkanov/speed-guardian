@@ -17,7 +17,7 @@ module.exports = {
           required: true
       },
       paths: {
-          type: 'array',
+          type: 'string',
           required: true
       },
       cronRegex: {

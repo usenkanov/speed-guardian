@@ -8,26 +8,6 @@ var async = require('../../node_modules/sails/node_modules/async');
 var tempJobNames = [];
 var concurrency = 3;
 
-var jobs = [
-    {
-        cron: '* * * * *',
-        paths: [
-            '/',
-            '/place/Mount-Tambora',
-            '/science/volcano'
-        ],
-        domain: 'http://www.britannica.com'
-    },
-    {
-        cron: '*/2 * * * *',
-        paths: [
-            '/post/253626/',
-            '/post/253620/'
-        ],
-        domain: 'http://geektimes.ru/'
-    }
-];
-
 module.exports = {
 
     schedule: function (req, res) {
@@ -39,16 +19,34 @@ module.exports = {
         Promise.resolve()
             .then(function () {
                 return new Promise(function (resolve) {
+
+                    Project.find()
+                        .then(function (projects) {
+                            var jobs = [];
+                            projects.forEach(function (project) {
+                                var paths = project.paths.toString().match(/[^\r\n]+/g);
+                                jobs.push({
+                                    cron: project.cronRegex,
+                                    domain: project.host,
+                                    paths: paths
+                                });
+                            });
+                            return resolve(jobs);
+                        })
+                        .catch(function (err) {
+                            return resolve(null, err);
+                        });
+                });
+            })
+            .then(function (jobs) {
+                return new Promise(function (resolve) {
+
                     tempJobNames.forEach(function (jobName) {
                         schedule.cancelJob(jobName);
                         canceledJobs.push(jobName);
                     });
                     tempJobNames = [];
-                    return resolve();
-                });
-            })
-            .then(function () {
-                return new Promise(function (resolve) {
+
                     jobs.forEach(function (job) {
                         var cronJob = new schedule.Job(uuid.v4(), function () {
                             runQueue(job);
@@ -56,6 +54,7 @@ module.exports = {
                         cronJob.schedule(job.cron);
                         tempJobNames.push(cronJob.name);
                     });
+
                     return resolve();
                 });
             })
@@ -95,7 +94,7 @@ function timePage(url) {
             if (err) {
                 return resolve(err);
             }
-            var result = stdout.replace(/(\r\n|\n|\r)/gm,'');
+            var result = stdout.replace(/(\r\n|\n|\r)/gm, '');
             console.log('response time (ms):' + result + ' url: (' + url + ')');
             return resolve(result);
         });
