@@ -12,7 +12,7 @@
         <%speedMetrics.forEach(function(speedMetric, index){ %>
          <div>
             <li>
-                 <h4><i><%- project %></i>: <a href="<%- url %>"><%- url %></a></h4>
+                 <h4><i><%- projectName %></i>: <a href="<%- speedMetric.url %>"><%- speedMetric.url %></a></h4>
                  <!-- <p><%= speedMetric.value %></p> -->
                  <div id="chart_div<%= index %>"></div>
             </li>

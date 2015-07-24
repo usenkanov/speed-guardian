@@ -10,6 +10,7 @@ var Promise = require('bluebird');
 module.exports = {
 
     generateReport:function(req,res){
+        var projectName = req.param('project');
         console.log("Inside generateReport... ");
 
         return Promise.resolve()
@@ -27,8 +28,7 @@ module.exports = {
                 console.log("Done querying")
                 return res.view('report', {
                     speedMetrics: results,
-                    project: 'Mendel QA',
-                    url: 'http://something.com/param'
+                    projectName: projectName
                 });
             });
     }
