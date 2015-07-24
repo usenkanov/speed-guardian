@@ -36,7 +36,8 @@ module.exports.routes = {
         view: 'homepage'
     },
     'get /schedule' : 'ScheduleController.schedule',
-    'get /showSchedule' : 'ScheduleController.showSchedule'
+    'get /showSchedule' : 'ScheduleController.showSchedule',
+    'get /report' : 'SpeedMetricController.generateReport'
 
   /***************************************************************************
   *                                                                          *
