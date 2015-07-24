@@ -6,11 +6,18 @@
 </head>
 
 <body>
+<div class="container">
+      <div class="page-header">
+          <div class="row">
+            <h2>Site-Performance Report</h2>
+            <button type="button" class="btn btn-lg btn-primary">Re-Generate</button>
+          </div>
+      </div>
 
-     <div class="container">
+
      <ol>
         <%speedMetrics.forEach(function(speedMetric, index){ %>
-         <div>
+         <div class="row12">
             <li>
                  <h4><i><%- projectName %></i>: <a href="<%- speedMetric.url %>"><%- speedMetric.url %></a></h4>
                  <!-- <p><%= speedMetric.value %></p> -->
@@ -22,8 +29,8 @@
      </div>
 
     <script>
-    google.load('visualization', '1', {packages: ['corechart', 'line']});
-    google.setOnLoadCallback(drawAll);
+    //google.load('visualization', '1', {packages: ['corechart', 'line']});
+    //google.setOnLoadCallback(drawAll);
 
     var options = {
         hAxis: {
