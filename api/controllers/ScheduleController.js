@@ -78,10 +78,10 @@ module.exports = {
 function runQueue(task) {
     var urls = [];
     task.paths.forEach(function (path) {
-        urls.push(task.domain + path);
+        urls.push(task.domain.trim() + path.trim());
     });
 
-    queue.push(urls);
+    executionQueue.push(urls);
     console.log(urls.length + ' urls queued');
 }
 
@@ -89,10 +89,10 @@ function timePage(url) {
     var exec = require('child_process').exec;
     var script = process.cwd() + '/scripts/loadspeed.js';
 
-    return new Promise(function (resolve) {
+    return new Promise(function (resolve, reject) {
         exec('phantomjs ' + script + ' ' + url, function (err, stdout) {
             if (err) {
-                return resolve(err);
+                return reject(err);
             }
             var result = stdout.replace(/(\r\n|\n|\r)/gm, '');
             console.log('response time (ms):' + result + ' url: (' + url + ')');
@@ -101,10 +101,19 @@ function timePage(url) {
     });
 };
 
-var queue = async.queue(function (job, callback) {
-    timePage(job)
+var executionQueue = async.queue(function (url, callback) {
+    timePage(url)
         .then(function (timeInMs) {
-            return callback(timeInMs);
+            SpeedMetric
+                .create({
+                    url: url,
+                    value: timeInMs
+                }).exec(function (err) {
+                    if(err) {
+                        return callback(err);
+                    }
+                    return callback();
+                });
         })
         .catch(function (err) {
             util.error(err, err.stack);
@@ -112,8 +121,8 @@ var queue = async.queue(function (job, callback) {
         });
 }, concurrency);
 
-queue.drain = function () {
-    console.log('all items have been processed');
+executionQueue.drain = function () {
+    console.log('all items have been processed---------------');
 };
 
 

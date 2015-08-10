@@ -12,7 +12,7 @@ module.exports = {
             required: true
         },
         value: {
-            type: 'string',
+            type: 'integer',
             required: true
         }
     }
