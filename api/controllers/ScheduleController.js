@@ -70,8 +70,22 @@ module.exports = {
                 return res.serverError(err);
             });
     },
-    showSchedule: function (req, res) {
-        res.send();
+    showScheduled: function (req, res) {
+        var result = [];
+        tempJobNames.forEach(function (jobName) {
+            result.push(jobName);
+        });
+        return res.send(result);
+    },
+    unschedule: function (req, res) {
+        var result = {
+            is_successful: true
+        };
+        tempJobNames.forEach(function (jobName) {
+            schedule.cancelJob(jobName);
+        });
+        tempJobNames = [];
+        return res.send(result);
     }
 };
 

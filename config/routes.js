@@ -33,10 +33,14 @@ module.exports.routes = {
   ***************************************************************************/
 
     '/': {
-        view: 'home'
+        view: 'status'
+    },
+    '/projects': {
+        view: 'projects'
     },
     'get /schedule' : 'ScheduleController.schedule',
-    'get /showSchedule' : 'ScheduleController.showSchedule',
+    'get /showScheduled' : 'ScheduleController.showScheduled',
+    'get /unschedule' : 'ScheduleController.unschedule',
     'get /report' : 'SpeedMetricController.generateReport'
 
   /***************************************************************************

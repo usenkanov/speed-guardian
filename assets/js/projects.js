@@ -1,6 +1,6 @@
 angular
     .module('SpeedGuardianApp', [])
-    .controller('HomeController', function ($scope, $http) {
+    .controller('ProjectsController', function ($scope, $http) {
 
         $scope.projects = [];
         $scope.theProject = {};
@@ -38,7 +38,7 @@ angular
                 .then(function onSuccess() {
                     loadProjects();
                 }, function onFailure(response) {
-                    alert("Something went wrong: " + response);
+                    alert('Something went wrong: ' + response);
                 });
         };
 
@@ -59,7 +59,7 @@ angular
                     loadProjects();
                     reinitProject();
                 }, function onFailure(response) {
-                    alert("Something went wrong: " + response);
+                    alert('Something went wrong: ' + response);
                 });
 
         };

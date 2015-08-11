@@ -1,4 +1,4 @@
-<div class="container" ng-controller="HomeController">
+<div class="container" ng-controller="ProjectsController">
 
     <div id="project-modal" class="modal fade bs-example-modal-lg">
         <div class="modal-dialog modal-lg">
@@ -49,9 +49,9 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="/">Status</a></li>
+                    <li class="active"><a href="#">Projects</a></li>
+                    <li><a href="#">Reports</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
@@ -60,7 +60,7 @@
     <h3>Projects</h3>
 
     <div class="container-fluid">
-        <div class="row button-holder">
+        <div class="row button-holder right-aligned">
             <button type="button" class="btn btn-success" ng-click="showAddModal()">Add New</button>
         </div>
     </div>
@@ -83,5 +83,5 @@
         </tr>
     </table>
 
-    <script src="/js/home.js"></script>
+    <script src="/js/projects.js"></script>
 </div>

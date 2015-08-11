@@ -1,4 +1,6 @@
 .button-holder {
-    text-align: right;
     margin-bottom: 20px;
+}
+.right-aligned {
+    text-align: right;
 }
