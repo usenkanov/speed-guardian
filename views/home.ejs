@@ -1,4 +1,39 @@
-<div class="container">
+<div class="container" ng-controller="HomeController">
+
+    <div id="project-modal" class="modal fade bs-example-modal-lg">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Project</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" ng-model="theProject.name">
+                        </div>
+                        <div class="form-group">
+                            <label for="host">Host</label>
+                            <input type="text" class="form-control" id="host" ng-model="theProject.host">
+                        </div>
+                        <div class="form-group">
+                            <label for="cronRegex">Cron</label>
+                            <input type="text" class="form-control" id="cronRegex" ng-model="theProject.cronRegex">
+                        </div>
+                        <div class="form-group">
+                            <label for="paths">Urls</label>
+                            <textarea class="form-control" id="paths" rows="10" ng-model="theProject.paths"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveProject()">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <!-- Static navbar -->
     <nav class="navbar navbar-default">
@@ -24,21 +59,29 @@
 
     <h3>Projects</h3>
 
+    <div class="container-fluid">
+        <div class="row button-holder">
+            <button type="button" class="btn btn-success" ng-click="showAddModal()">Add New</button>
+        </div>
+    </div>
+
     <table class="table">
         <tr>
+            <th>Name</th>
+            <th>Host</th>
+            <th>Cron</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="project in projects">
+            <td>{{project.name}}</td>
+            <td>{{project.host}}</td>
+            <td>{{project.cronRegex}}</td>
             <td>
-                xxx
+                <button class="btn btn-primary" ng-click="showEditModal(project.id)">Edit</button>
+                <button class="btn btn btn-danger" ng-click="deleteProject(project.id)">Delete</button>
             </td>
         </tr>
     </table>
 
-    <!-- Main component for a primary marketing message or call to action -->
-    <div class="jumbotron">
-        <h1>Navbar example</h1>
-        <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-        <p>
-            <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs »</a>
-        </p>
-    </div>
-
+    <script src="/js/home.js"></script>
 </div>
