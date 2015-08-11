@@ -33,7 +33,7 @@ module.exports.routes = {
   ***************************************************************************/
 
     '/': {
-        view: 'homepage'
+        view: 'home'
     },
     'get /schedule' : 'ScheduleController.schedule',
     'get /showSchedule' : 'ScheduleController.showSchedule',

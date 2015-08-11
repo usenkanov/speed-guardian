@@ -1,13 +1,11 @@
 [
     {
-        "id": 1,
         "name": "project 1",
         "host": "http://www.somehost.com",
         "paths": "/home\n /aboutus\n",
         "cronRegex": "0 * * * *"
     },
     {
-        "id": 2,
         "name": "project 2",
         "host": "http://www.someotherhost.com",
         "paths": "/home2\n /aboutus2\n",
