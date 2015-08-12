@@ -1,80 +1,41 @@
-<html>
-<title>Sample Chart </title>
-<head>
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-</head>
+<div class="container" ng-controller="ReportController">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-<body>
-<div class="container">
-      <div class="page-header">
-          <div class="row">
-            <h2>Site-Performance Report</h2>
-            <button type="button" class="btn btn-lg btn-primary">Re-Generate</button>
-          </div>
-      </div>
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Speed Guardian</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Status</a></li>
+                    <li><a href="/projects">Projects</a></li>
+                    <li class="active"><a href="#">Reports</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+    </nav>
 
+    <h3>Site Performance Report</h3>
 
-     <ol>
-        <%speedMetrics.forEach(function(speedMetric, index){ %>
-         <div class="row12">
-            <li>
-                 <h4><i><%- projectName %></i>: <a href="<%- speedMetric.url %>"><%- speedMetric.url %></a></h4>
-                 <!-- <p><%= speedMetric.value %></p> -->
-                 <div id="chart_div<%= index %>"></div>
-            </li>
-         </div>
-         <% }); %>
-     </ol>
-     </div>
+    <div class="container-fluid">
+        <div class="row button-holder">
+            <select ng-options="item.name for item in projects track by item.id" ng-model="selectedProject" ng-change="projectSelected()"></select>
+            <select ng-options="item for item in urls" ng-model="selectedUrl" ng-change="urlSelected()"></select>
+        </div>
+        <div class="row button-holder right-aligned">
+            <button type="button" class="btn btn-lg btn-primary" ng-click="regenerate()">Re-Generate</button>
+        </div>
+    </div>
 
-    <script>
-    google.load('visualization', '1', {packages: ['corechart', 'line']});
-    google.setOnLoadCallback(drawAll);
+    <div id="chart_div"></div>
 
-    var options = {
-        hAxis: {
-          title: 'Week'
-        },
-        vAxis: {
-          title: 'Time'
-        }
-    };
-
-    function drawAll(){
-        var speedMetrics = '<%= speedMetrics %>';
-        var arrayLength = '<%= speedMetrics.length %>';
-        console.log("speedMetrics = " + speedMetrics);
-        console.log("arrayLength = " + arrayLength);
-        for (var i = 0; i < arrayLength; i++) {
-            drawGraph(speedMetrics[i], 'chart_div'+i);
-        }
-    }
-
-    function drawGraph(speedMetric, divElementName) {
-        var data = new google.visualization.DataTable();
-        data.addColumn('number', 'Time');
-        data.addColumn('number', 'Mendel');
-        console.log("speedMetric = " + speedMetric );
-        data.addRows([
-            [0, 0],   [1, 10],  [2, 23],  [3, 17],  [4, 18],  [5, 9],
-            [6, 11],  [7, 27],  [8, 33],  [9, 40],  [10, 32], [11, 35],
-            [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
-            [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
-            [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
-            [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
-            [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
-            [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70],
-            [48, 72], [49, 68], [50, 66], [51, 65], [52, 67], [53, 70],
-            [54, 71], [55, 72], [56, 73], [57, 75], [58, 70], [59, 68],
-            [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
-            [66, 70], [67, 72], [68, 75], [69, 80]
-        ]);
-        console.log("chart_div = " + divElementName);
-        var chart = new google.visualization.LineChart(document.getElementById(divElementName));
-        console.log("chart = " + chart);
-        chart.draw(data, options);
-    }
-    </script>
-</body>
-</html>
+    <script src="/js/report.js"></script>
+</div>

@@ -6,29 +6,32 @@
  */
 
 var Promise = require('bluebird');
+var moment = require('moment');
 
 module.exports = {
 
-    generateReport:function(req,res){
-        var projectName = req.param('project');
-        console.log("Inside generateReport... ");
+    getMetrics:function(req,res){
+        var host = req.param('host');
+        var url = req.param('url');
 
         return Promise.resolve()
             .then(function () {
                 return SpeedMetric.find({
+                    where: {
+                        url: host + url
+                    },
                     sort: 'createdAt DESC'
                 });
             })
             .then(function (speedMetrics) {
                 var results = [];
                 speedMetrics.forEach(function (speedMetric) {
-                    console.log("speedMetric.url = " + speedMetric.url);
+                    var dt = moment(speedMetric.createdAt);
+                    speedMetric.ms = dt.valueOf();
                     results.push(speedMetric);
                 });
-                console.log("Done querying")
-                return res.view('report', {
-                    speedMetrics: results,
-                    projectName: projectName
+                return res.send({
+                    speedMetrics: results
                 });
             });
     }

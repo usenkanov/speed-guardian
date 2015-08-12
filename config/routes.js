@@ -38,10 +38,13 @@ module.exports.routes = {
     '/projects': {
         view: 'projects'
     },
+    '/report': {
+        view: 'report'
+    },
     'get /schedule' : 'ScheduleController.schedule',
     'get /showScheduled' : 'ScheduleController.showScheduled',
     'get /unschedule' : 'ScheduleController.unschedule',
-    'get /report' : 'SpeedMetricController.generateReport'
+    'get /getMetrics' : 'SpeedMetricController.getMetrics'
 
   /***************************************************************************
   *                                                                          *
