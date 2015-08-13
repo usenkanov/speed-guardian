@@ -31,4 +31,14 @@ angular
                     alert('Something went wrong: ' + response);
                 });
         };
+
+        $scope.runAllOnce = function () {
+            $http
+                .get('/runNow')
+                .then(function onSuccess() {
+                    alert('Started');
+                }, function onFailure(response) {
+                    alert('Something went wrong: ' + response);
+                });
+        }
     });

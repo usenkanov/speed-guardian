@@ -14,12 +14,19 @@ module.exports = {
         var host = req.param('host');
         var url = req.param('url');
 
+        var clause = {};
+        if(host && url){
+            clause.url = host + url;
+        } else if(host) {
+            clause.url = {
+                contains: host
+            };
+        }
+
         return Promise.resolve()
             .then(function () {
                 return SpeedMetric.find({
-                    where: {
-                        url: host + url
-                    },
+                    where: clause,
                     sort: 'createdAt DESC'
                 });
             })

@@ -3,7 +3,7 @@
 /* Controllers */
 google.load('visualization', '1', {packages: ['corechart', 'line']});
 
-function drawGraph(speedMetric, divElementName) {
+function drawGraph(speedMetric) {
     var data = new google.visualization.DataTable();
     data.addColumn('datetime', 'Time');
     data.addColumn('number', 'Load time');
@@ -13,14 +13,15 @@ function drawGraph(speedMetric, divElementName) {
     });
 
     data.addRows(points);
-    var chart = new google.visualization.LineChart(document.getElementById(divElementName));
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
 
     var options = {
-        hAxis: {
-            title: 'Time'
-        },
+        hAxis: { title: 'Time' },
         vAxis: {
-            title: 'Load Time'
+            title: 'Load Time',
+            viewWindow: {
+                min: 0
+            }
         }
     };
     chart.draw(data, options);
@@ -33,8 +34,8 @@ angular
         $scope.speedMetrics = [];
         $scope.projects = [];
         $scope.urls = [];
-        $scope.selectedProject;
-        $scope.selectedUrl;
+        $scope.selectedProject = null;
+        $scope.selectedUrl = null;
 
         $scope.regenerate = function () {
             generateGraph();
@@ -43,10 +44,12 @@ angular
         $scope.projectSelected = function () {
             var urls = $scope.selectedProject.paths.split("\n");
             $scope.urls = urls;
+            $scope.selectedUrl = null;
+            generateGraph();
         };
 
         $scope.urlSelected = function () {
-            console.log('y');
+            generateGraph();
         };
 
         var init = function () {
@@ -61,7 +64,7 @@ angular
 
         var generateGraph = function () {
             loadMetrics(function () {
-                drawGraph($scope.speedMetrics, 'chart_div');
+                drawGraph($scope.speedMetrics);
             });
         };
 

@@ -44,6 +44,7 @@ module.exports.routes = {
     'get /schedule' : 'ScheduleController.schedule',
     'get /showScheduled' : 'ScheduleController.showScheduled',
     'get /unschedule' : 'ScheduleController.unschedule',
+    'get /runNow' : 'ScheduleController.runNow',
     'get /getMetrics' : 'SpeedMetricController.getMetrics'
 
   /***************************************************************************

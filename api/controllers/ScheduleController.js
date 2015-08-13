@@ -1,7 +1,6 @@
 var schedule = require('node-schedule');
 var uuid = require('node-uuid');
 var Promise = require('bluebird');
-var phantomjs = require('phantomjs');
 var util = require('util');
 var async = require('../../node_modules/sails/node_modules/async');
 
@@ -86,6 +85,44 @@ module.exports = {
         });
         tempJobNames = [];
         return res.send(result);
+    },
+    runNow: function (req, res) {
+        var result = {
+            is_successful: true
+        };
+        Promise.resolve()
+            .then(function () {
+                return new Promise(function (resolve) {
+
+                    Project.find()
+                        .then(function (projects) {
+                            var jobs = [];
+                            projects.forEach(function (project) {
+                                var paths = project.paths.toString().match(/[^\r\n]+/g);
+                                jobs.push({
+                                    domain: project.host,
+                                    paths: paths
+                                });
+                            });
+                            return resolve(jobs);
+                        })
+                        .catch(function (err) {
+                            return resolve(null, err);
+                        });
+                });
+            })
+            .then(function (jobs) {
+                jobs.forEach(function (job) {
+                    job.paths.forEach(function (path) {
+                        executionQueue.push(job.domain.trim() + path.trim());
+                    });
+                });
+                return res.send(result);
+            })
+            .catch(function (err) {
+                util.error(err, err.stack);
+                return res.serverError(err);
+            });
     }
 };
 
@@ -104,8 +141,9 @@ function timePage(url) {
     var script = process.cwd() + '/scripts/loadspeed.js';
 
     return new Promise(function (resolve, reject) {
-        exec('phantomjs ' + script + ' ' + url, function (err, stdout) {
+        exec('phantomjs --ssl-protocol=any --ignore-ssl-errors=true ' + script + ' ' + url, function (err, stdout, stderr) {
             if (err) {
+                console.log('failed: url: (' + url + ')');
                 return reject(err);
             }
             var result = stdout.replace(/(\r\n|\n|\r)/gm, '');
@@ -130,7 +168,7 @@ var executionQueue = async.queue(function (url, callback) {
                 });
         })
         .catch(function (err) {
-            util.error(err, err.stack);
+            // util.error(err, err.stack);
             return callback(-1);
         });
 }, concurrency);
