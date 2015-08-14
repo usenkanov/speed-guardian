@@ -27,8 +27,8 @@
 
     <div class="container-fluid">
         <div class="row button-holder">
-            <select ng-options="item.name for item in projects track by item.id" ng-model="selectedProject" ng-change="projectSelected()"></select>
-            <select ng-options="item for item in urls" ng-model="selectedUrl" ng-change="urlSelected()"></select>
+            <select class="ddl" ng-options="item.name for item in projects track by item.id" ng-model="selectedProject" ng-change="projectSelected()"></select>
+            <select class="ddl" ng-options="item for item in urls" ng-model="selectedUrl" ng-change="urlSelected()"></select>
         </div>
         <div class="row button-holder right-aligned">
             <button type="button" class="btn btn-lg btn-primary" ng-click="regenerate()">Re-Generate</button>
