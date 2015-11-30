@@ -41,6 +41,10 @@ module.exports = {
                     speedMetrics: results
                 });
             });
+    },
+
+    ping: function (req, res) {
+        res.send('ok');
     }
 
 };
